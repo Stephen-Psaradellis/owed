@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Owed</title>
+  <meta name="description" content="Owed is an AI collections agent for freelancers: paste a brief, it bills the client through PayPal, plans polite-to-final reminders, notices when you are paid and answers who owes you what.">
+  <meta name="color-scheme" content="light dark">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/build/bryntum-light.css" id="bryntum-theme">
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/theme.js"></script>
+  <script src="/build/timeline.js" defer></script>
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="wrap header-row">
+      <a class="brand" href="/" aria-label="Owed home">
+        <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="13"/><path d="M10.5 16.5l3.6 3.6 7.4-8.2" fill="none" stroke="var(--accent-ink)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="brand-name">Owed</span>
+      </a>
+      <p class="tagline">The AI collections agent for freelancers</p>
+      <div class="header-actions">
+        <span class="chip" id="chip-paypal" title="Where invoices are created">PayPal</span>
+        <span class="chip" id="chip-ai" title="Which model reads briefs and writes reminders">AI</span>
+        <button type="button" class="icon-btn" id="theme-toggle" aria-label="Switch colour theme">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 1 0 9 9 7 7 0 0 1-9-9z"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="demo-banner" id="demo-banner" role="status" hidden>
+    <div class="wrap"><strong>Demo mode.</strong> <span id="demo-detail">Running without live keys.</span></div>
+  </div>
+
+  <main id="main" class="wrap">
+    <section class="topbar" aria-label="Summary">
+      <div class="kpis">
+        <div class="kpi"><span class="kpi-label">Owed to you</span><span class="kpi-value" id="kpi-owed">$0</span><span class="kpi-sub" id="kpi-owed-sub">no open invoices</span></div>
+        <div class="kpi kpi-bad"><span class="kpi-label">Overdue</span><span class="kpi-value" id="kpi-overdue">$0</span><span class="kpi-sub" id="kpi-overdue-sub">nothing late</span></div>
+        <div class="kpi kpi-good"><span class="kpi-label">Collected</span><span class="kpi-value" id="kpi-paid">$0</span><span class="kpi-sub" id="kpi-paid-sub">no payments yet</span></div>
+        <div class="kpi"><span class="kpi-label">Reminders</span><span class="kpi-value" id="kpi-rem">0</span><span class="kpi-sub" id="kpi-rem-sub">scheduled</span></div>
+      </div>
+      <div class="actions">
+        <button type="button" class="btn btn-primary" id="btn-demo">Run demo</button>
+        <button type="button" class="btn" id="btn-tick" title="Ask PayPal for the status of every open invoice and send any reminder that is due">Check payments</button>
+        <button type="button" class="btn btn-ghost" id="btn-reset">Reset</button>
+      </div>
+    </section>
+
+    <div class="grid">
+      <div class="col-main">
+        <section class="panel" aria-labelledby="ledger-title">
+          <div class="panel-head">
+            <h2 id="ledger-title">Ledger</h2>
+            <span class="muted small" id="ledger-today"></span>
+          </div>
+          <div class="empty" id="ledger-empty">
+            <p><strong>No invoices yet.</strong></p>
+            <p class="muted">Click <b>Run demo</b> to bill four sample clients in one go, or paste a job brief into the agent box, like <em>"Built the Shopify theme for Acme, $1,800, net 15, contact jo@acme.test"</em>.</p>
+          </div>
+          <div class="table-wrap" id="ledger-wrap" hidden>
+            <table class="ledger">
+              <thead>
+                <tr><th scope="col">Client</th><th scope="col" class="num">Amount</th><th scope="col">Due</th><th scope="col">Status</th><th scope="col">Next action</th><th scope="col"><span class="sr-only">Actions</span></th></tr>
+              </thead>
+              <tbody id="ledger-body"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="panel" aria-labelledby="timeline-title">
+          <div class="panel-head">
+            <h2 id="timeline-title">Collections timeline</h2>
+            <span class="muted small">Drag a coloured reminder to reschedule it</span>
+          </div>
+          <ul class="legend" aria-label="Legend">
+            <li><i class="sw sw-term"></i>Payment term</li>
+            <li><i class="sw sw-overdue"></i>Overdue</li>
+            <li><i class="fa fa-envelope lg-polite" aria-hidden="true"></i>Polite</li>
+            <li><i class="fa fa-bell lg-firm" aria-hidden="true"></i>Firm</li>
+            <li><i class="fa fa-triangle-exclamation lg-final" aria-hidden="true"></i>Final</li>
+            <li><i class="fa fa-bell lg-done" aria-hidden="true"></i>Sent / stopped</li>
+            <li><i class="fa fa-circle-check lg-paid" aria-hidden="true"></i>Paid</li>
+          </ul>
+          <div class="timeline-host" id="timeline"><p class="muted timeline-note" id="timeline-note">The timeline appears once there is an invoice.</p></div>
+        </section>
+      </div>
+
+      <aside class="col-side">
+        <section class="panel chat-panel" aria-labelledby="chat-title">
+          <div class="panel-head"><h2 id="chat-title">Agent</h2><span class="muted small">Paste a brief or ask a question</span></div>
+          <div class="chat-log" id="chat-log" aria-live="polite"></div>
+          <div class="samples" id="samples" aria-label="Examples"></div>
+          <form class="chat-form" id="chat-form">
+            <label for="chat-input" class="sr-only">Message to the agent</label>
+            <textarea id="chat-input" rows="3" maxlength="8000" placeholder="Paste an email thread or a brief: 'Logo for Fernhill Yoga, $950, due in 10 days, mia@fernhillyoga.test'. Or ask: who owes me what?"></textarea>
+            <div class="chat-row">
+              <label class="check"><input type="checkbox" id="auto-send"> Send invoices without asking</label>
+              <button type="submit" class="btn btn-primary" id="chat-send">Send</button>
+            </div>
+          </form>
+        </section>
+
+        <section class="panel trace-panel" aria-labelledby="trace-title">
+          <div class="panel-head">
+            <h2 id="trace-title">Live trace</h2>
+            <div class="filters" role="group" aria-label="Filter the trace">
+              <button type="button" class="filter is-on" data-filter="all" aria-pressed="true">All</button>
+              <button type="button" class="filter" data-filter="paypal" aria-pressed="false">PayPal</button>
+              <button type="button" class="filter" data-filter="llm" aria-pressed="false">AI</button>
+            </div>
+          </div>
+          <ol class="trace" id="trace" aria-live="off"></ol>
+        </section>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <p>Owed uses the PayPal <b>sandbox</b> only; no real money moves. Timeline by Bryntum Scheduler (trial). MIT licensed.</p>
+    </div>
+  </footer>
+
+  <div class="toasts" id="toasts" aria-live="assertive"></div>
+</body>
+</html>

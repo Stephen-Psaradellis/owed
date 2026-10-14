@@ -1,0 +1,25 @@
+{
+  "voice": "en-US-AndrewNeural",
+  "rate": "+4%",
+  "scenes": [
+    {"id": "intro",
+     "say": "Freelancers lose real money to invoices that go out late and never get chased. Owed is an AI collections agent that does the chasing for you, through PayPal."},
+    {"id": "brief",
+     "say": "I paste what I already have: one line, or a whole email thread. The agent pulls out the client, the amount, the terms and the due date, and plans the follow-ups before anything is sent. It can't invent money: every amount has to appear in what I pasted."},
+    {"id": "send",
+     "say_sandbox": "One click, and it creates and sends a PayPal invoice on the sandbox. Every step, and every PayPal call, shows up live in this trace.",
+     "say_demo": "One click, and it creates and sends the invoice. Here it's running against a faithful copy of PayPal's Invoicing API; with sandbox keys, the very same calls go to PayPal. Every step shows up live in this trace."},
+    {"id": "demo",
+     "say": "Run demo bills four sample clients at different stages. Brightline is eight days late and has paid late before, so the firm reminder has already gone out. Juniper paid through PayPal, so the agent noticed, and cancelled its reminders."},
+    {"id": "plan",
+     "say": "Every plan is tuned to the client and the amount, and it says why. Each reminder is written for the day it goes out."},
+    {"id": "timeline",
+     "say": "Here's the whole collections plan on a Bryntum Scheduler timeline. If I want Acme's reminder later, I just drag it. The agent checks the new date, and rewrites the email to match."},
+    {"id": "paid",
+     "say": "When a client pays, I don't have to remember to call off the reminders. The agent checks PayPal before every reminder, sees the invoice is paid, and stops."},
+    {"id": "ask",
+     "say": "And I can just ask. The numbers come straight from the ledger, and the AI isn't allowed to quote a figure that isn't in it."},
+    {"id": "outro",
+     "say": "Owed runs on the PayPal sandbox with any OpenAI-compatible model, or fully offline in demo mode. Send the invoice, get paid, and stop chasing."}
+  ]
+}

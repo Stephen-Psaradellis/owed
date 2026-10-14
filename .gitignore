@@ -1,0 +1,12 @@
+node_modules/
+public/build/
+data/
+.env
+.env.*
+!.env.example
+*.log
+*.tmp
+.DS_Store
+src/client/.css-entries/
+video/out/
+owed-demo-draft.mp4
