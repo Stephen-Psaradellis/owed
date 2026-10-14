@@ -90,7 +90,9 @@ guards fire.
   `@paypal/agent-toolkit` 1.11.0 and kept its tool names, but call the REST API directly
   because the toolkit's `create_invoice` has no payment-term or due-date field.
 - **The demo video:** recorded by a scripted browser (Playwright) driving the real app, with
-  a synthesized narration voice (Microsoft neural text-to-speech); the scripts are in `video/`.
+  a synthesized narration voice (Microsoft neural text-to-speech); the scripts are in `video/` It runs
+  against the PayPal sandbox and the live LLM; where a model call took more than a few seconds,
+  the quiet middle of the wait is cut (17s in the submitted take).
 
 ## Challenges we ran into
 

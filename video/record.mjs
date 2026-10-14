@@ -75,8 +75,10 @@ async function typeSlow(sel, text) {
 
 const scenes = {
   async intro() { await moveTo("#kpi-owed"); await moveTo("#kpi-overdue"); await moveTo("#kpi-paid"); await moveTo("#chat-input"); },
-  async brief() { await typeSlow("#chat-input", BRIEF); await click("#chat-send"); await sleep(1600);
-    await moveTo(page.getByText("Fernhill Yoga").first()); await moveTo(page.getByText(/Net 10/).first()); await moveTo(page.getByText(/^polite /).first()); },
+  async brief() { await typeSlow("#chat-input", BRIEF); await click("#chat-send");
+    // The live LLM can take tens of seconds; wait for the preview card rather than a fixed sleep.
+    await page.getByRole("button", { name: "Create & send via PayPal" }).waitFor({ timeout: 120000 });
+    await moveTo(page.getByText("Fernhill Yoga").first()); await moveTo(page.getByText(/Net \d+|Due on receipt/).first()); await moveTo(page.getByText(/^polite /).first()); },
   async send() { await click(page.getByRole("button", { name: "Create & send via PayPal" })); await sleep(1200);
     await scrollTo("#trace-title"); await moveTo(page.locator("#trace li").filter({ hasText: "create_invoice" }).first());
     await moveTo(page.locator("#trace li").filter({ hasText: "send_invoice" }).first()); },
@@ -94,7 +96,11 @@ const scenes = {
       await page.mouse.up();
       await page.evaluate(() => { document.getElementById("rec-cursor").style.transition = ""; }); }
     await sleep(900); await moveTo("#toasts").catch(() => {}); },
-  async paid() { await scrollTo("body"); await click(page.locator("#ledger-body tr").filter({ hasText: "Northwind" }).first().getByRole("button", { name: "Client pays" }));
+  async paid() { await scrollTo("body");
+    // Sandbox has no "Client pays" (a real payer page needs a buyer login); it records a bank transfer instead.
+    const row = page.locator("#ledger-body tr").filter({ hasText: "Northwind" }).first();
+    const sim = row.getByRole("button", { name: "Client pays" });
+    await click((await sim.count()) ? sim : row.getByRole("button", { name: "Mark paid" }));
     await sleep(1500); await moveTo("#kpi-paid"); await scrollTo("#trace-title"); await moveTo(page.locator("#trace li").filter({ hasText: /PAID|stopped/ }).first()).catch(() => {}); },
   async ask() { await scrollTo("#chat-title"); await click(page.getByRole("button", { name: "Who owes me what?" })); await sleep(1800);
     await typeSlow("#chat-input", "What's overdue?"); await click("#chat-send"); await sleep(1500); },

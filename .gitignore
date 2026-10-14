@@ -8,5 +8,5 @@ data/
 *.tmp
 .DS_Store
 src/client/.css-entries/
-video/out/
+video/out*/
 owed-demo-draft.mp4
