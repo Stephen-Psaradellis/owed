@@ -3,7 +3,7 @@
 **Tagline:** An AI collections agent for freelancers: paste the brief, it bills the client
 through PayPal and chases the invoice until it is paid.
 
-**Links (fill in before submitting):** demo `<Render URL or "run locally">` · repo
+**Links (fill in before submitting):** demo https://owed.s-n-psaradellis.workers.dev (PayPal sandbox + Workers AI; click Run demo) · repo
 https://github.com/Stephen-Psaradellis/owed · video `<YouTube URL, under 3 minutes>`
 
 **Prizes targeted:** Best Use of Agentic Commerce · Best Use of PayPal + AI · Bryntum
@@ -113,7 +113,7 @@ guards fire.
 - Reminders that adapt to the client: the habitually late client is chased days earlier
   than the reliable one, with the reasoning shown in plain English.
 - A timeline you can manipulate: drag a reminder and the agent re-validates and rewrites it.
-- 62 tests, including proof that no credential reaches a response, the trace or the logs.
+- 69 tests, including proof that no credential reaches a response, the trace or the logs.
 
 ## What we learned
 

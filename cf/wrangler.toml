@@ -1,0 +1,31 @@
+# Hosted demo of Owed on Cloudflare Workers (see cf/worker.js).
+#   npm run build                      # the Bryntum timeline bundle into public/build
+#   cd cf && npx wrangler@4 deploy
+# Secrets (never committed) - without them PayPal runs as the in-memory demo fake:
+#   npx wrangler secret put PAYPAL_CLIENT_ID
+#   npx wrangler secret put PAYPAL_CLIENT_SECRET
+name = "owed"
+main = "worker.js"
+compatibility_date = "2025-09-15"
+compatibility_flags = ["nodejs_compat", "enable_request_signal"]
+
+[assets]
+directory = "../public"
+binding = "ASSETS"
+run_worker_first = ["/api/*"]
+
+[ai]
+binding = "AI"
+
+[[durable_objects.bindings]]
+name = "OWED"
+class_name = "OwedDemo"
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["OwedDemo"]
+
+# Workers leave import.meta.url undefined in a bundle; src/config.js derives ROOT from it.
+# Nothing under ROOT is read here (assets are served by ASSETS, persistence is off).
+[define]
+"import.meta.url" = "\"file:///owed/src/config.js\""

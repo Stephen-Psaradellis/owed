@@ -206,6 +206,18 @@ event cannot stop the reminders for an unpaid invoice. Register the URL
 `https://<your-host>/api/webhooks/paypal` in the sandbox app's webhook settings with the
 event *Invoicing invoice paid*. Polling keeps working without webhooks.
 
+## Hosted demo (Cloudflare Workers)
+
+Live at https://owed.s-n-psaradellis.workers.dev - the same `src/app.js`, PayPal sandbox,
+LLM = Workers AI in-process through `llm-relay`. `cf/worker.js` serves `public/` as static
+assets and sends every `/api/*` request to one Durable Object that drives the node:http
+handler through a small req/res adapter, so the ledger and the live trace (SSE) share one
+instance. State is in memory: it resets when the object is evicted, and every visitor sees
+the same ledger (Reset clears it).
+
+    npm run build && cd cf && npx wrangler@4 deploy
+    npx wrangler secret put PAYPAL_CLIENT_ID      # and PAYPAL_CLIENT_SECRET; without them PayPal is the demo fake
+
 ## Deploy (Render or similar)
 
 `render.yaml` describes a free web service:
