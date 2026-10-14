@@ -19,10 +19,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-
----
-
-Third-party notice: the timeline uses Bryntum Scheduler, which is commercial
-software and NOT covered by this licence. This repository depends on the public
-Bryntum trial package (@bryntum/scheduler-trial) for evaluation; it is not
-redistributed here. See README.md, "Bryntum licensing".

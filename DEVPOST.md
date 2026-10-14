@@ -4,7 +4,7 @@
 through PayPal and chases the invoice until it is paid.
 
 **Links (fill in before submitting):** demo `<Render URL or "run locally">` · repo
-`<public repo URL>` · video `<YouTube URL, under 3 minutes>`
+https://github.com/Stephen-Psaradellis/owed · video `<YouTube URL, under 3 minutes>`
 
 **Prizes targeted:** Best Use of Agentic Commerce · Best Use of PayPal + AI · Bryntum
 sponsor prize (Scheduler)
